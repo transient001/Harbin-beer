@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+        <!-- 开启自动扫描 -->
+        <context:component-scan base-package="com.sxt.service.impl"></context:component-scan>
+       	<!-- 加载配置文件 -->
+       	<context:property-placeholder location="classpath:db.properties"/>
+        <!-- 数据库连接 -->
+        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        	<property name="driverClassName" value="${jdbc.driver}"></property>
+        	<property name="url" value="${jdbc.url}"></property>
+        	<property name="username" value="${jdbc.userName}"></property>
+        	<property name="password" value="${jdbc.password}"></property>
+        </bean>
+        <!-- sqlSessionFactory -->
+        <bean id="factory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        	<property name="dataSource" ref="dataSource"></property>
+        	<!-- 检索pojo包下的所有类 -->
+        	<property name="typeAliasesPackage" value="com.sxt.pojo"></property>
+        </bean>
+        <!-- mapper类的注入 -->
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        	<property name="sqlSessionFactoryBeanName" value="factory"></property>
+        	<property name="basePackage" value="com.sxt.mapper"></property>
+        </bean>
+        <!-- spring管理事务 -->
+        <bean id="tManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        	<property name="dataSource" ref="dataSource"></property>
+        </bean>
+        <tx:advice id="txManager" transaction-manager="tManager">
+        	<tx:attributes>
+        		<tx:method name="add*"/>
+        		<tx:method name="delete*"/>
+        		<tx:method name="update*"/>
+        		<tx:method name="find*" read-only="true"/>
+        	</tx:attributes>
+        </tx:advice>
+        <aop:config>
+        	<aop:pointcut expression="execution(* com.sxt.service.*.*(..))" id="servicePoint"/>
+        	<aop:advisor advice-ref="txManager" pointcut-ref="servicePoint"/>
+        </aop:config>
+        
+        
+</beans>

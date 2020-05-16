@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.sxt.mapper.GoodsMapper">
+	<!-- 查询全部 -->
+	<select id="findAll" resultType="Goods">
+		select * from t_goods
+	</select>
+	<!-- 分页查询 -->
+	<select id="findByPage" resultType="Goods" parameterType="map">
+		<if test="goodsName!=null and goodsName!=''">
+			<bind name="goodsName" value="'%'+goodsName+'%'"/>
+		</if>
+		select g.*,c.categoryName `category.categoryName` from t_goods g left join t_category c on g.categoryId=c.id
+		<where>
+			<if test="goodsName!=null and goodsName!=''">
+				and g.goodsName like #{goodsName}
+			</if>			
+		</where>
+		limit #{startNum},#{pageSize}
+	</select>
+	<!-- 查询总的记录数 -->
+	<select id="findCount" resultType="int" parameterType="Goods">
+		<if test="goodsName!=null and goodsName!=''">
+			<bind name="goodsName" value="'%'+goodsName+'%'"/>
+		</if>
+		select count(*) from t_goods g left join t_category c on g.categoryId=c.id
+		<where>
+			<if test="goodsName!=null and goodsName!=''">
+				and g.goodsName like #{goodsName}
+			</if>			
+		</where>	
+	</select>
+	<!-- 添加 -->
+	<insert id="add" parameterType="Goods">
+		insert into t_goods (goodsName,price,totalNum,categoryId) values(#{goodsName},#{price},#{totalNum},#{categoryId})
+	</insert>
+	<!-- 删除 -->
+	<delete id="delete" parameterType="int">
+		delete from t_goods where id=#{0}
+	</delete>
+	<!-- 修改 -->
+	<update id="update" parameterType="goods">
+		update t_goods set goodsName=#{goodsName},price=#{price},totalNum=#{totalNum},categoryId=#{categoryId} where id=#{id}
+	</update>
+	<!-- 根据id查询详情 -->
+	<select id="findById" resultType="goods" parameterType="int">
+		select g.*,c.categoryName `category.categoryName` from t_goods g left join t_category c on g.categoryId=c.id where g.id=#{0}		
+	</select>
+	<!-- 统计 -->
+	<select id="tongjiByGoodsName" resultType="GoodsView">
+		select goodsName,sum(totalNum) totalNum from t_goods group by goodsName
+	</select>
+	<!-- 商品入库 -->
+	<update id="addTotalNum">
+		update t_goods set totalNum=totalNum+#{totalNum} where id=#{id}
+	</update>
+	<!-- 商品出库 -->
+	<update id="reduceTotalNum" >
+		update t_goods set totalNum=totalNum-#{totalNum} where id=#{id}
+	</update>
+	
+</mapper>

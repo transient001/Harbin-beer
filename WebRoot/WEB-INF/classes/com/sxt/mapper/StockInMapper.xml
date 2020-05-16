@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.sxt.mapper.StockInMapper">
+  	<!-- 分页查询 -->
+  	<select id="findByPage" resultType="stockIn" parameterType="map">
+  		<if test="stockInName!=null and stockInName!=''">
+  			<bind name="stockInName" value="'%'+stockInName+'%'"/>
+  		</if>
+  		<if test="goodsName!=null and goodsName!=''">
+  			<bind name="goodsName" value="'%'+goodsName+'%'"/>		
+  		</if>
+  		<if test="supplierName!=null and supplierName!=''">
+  			<bind name="supplierName" value="'%'+supplierName+'%'"/>
+  		</if>
+  		select s.*,g.goodsName `goods.goodsName`,p.supplierName `supplier.supplierName`,u.realName `user.realName` from t_stock_in s,t_goods g,t_supplier p,t_user u where s.goodsId=g.id and s.supplierId=p.id and s.userId=u.id
+  			<if test="stockInName!=null and stockInName!=''">
+  				and s.stockInName like #{stockInName}
+  			</if>
+  			<if test="goodsName!=null and goodsName!=''">
+  				and g.goodsName like #{goodsName}
+  			</if>
+  			<if test="supplierName!=null and supplierName!=''">
+  				and p.supplierName like #{supplierName}
+  			</if>
+  			<if test="startTime!=null and startTime!=''">
+  				and s.stockInDate >= #{startTime}
+  			</if>
+  			<if test="endTime!=null and endTime!=''">
+  				and s.stockInDate &lt;= #{endTime}
+  			</if>
+  		limit #{startNum},#{pageSize}
+  	</select>
+  	<!-- 查询总的记录数 -->
+  	<select id="findCount" resultType="int" parameterType="stockIn">
+  		<if test="stockInName!=null and stockInName!=''">
+  			<bind name="stockInName" value="'%'+stockInName+'%'"/>
+  		</if>
+  		<if test="goodsName!=null and goodsName!=''">
+  			<bind name="goodsName" value="'%'+goodsName+'%'"/>		
+  		</if>
+  		<if test="supplierName!=null and supplierName!=''">
+  			<bind name="supplierName" value="'%'+supplierName+'%'"/>
+  		</if>  	
+  		select count(*) from t_stock_in s,t_goods g,t_supplier p,t_user u where s.goodsId=g.id and s.supplierId=p.id and s.userId=u.id
+  			<if test="stockInName!=null and stockInName!=''">
+  				and s.stockInName like #{stockInName}
+  			</if>
+  			<if test="goodsName!=null and goodsName!=''">
+  				and g.goodsName like #{goodsName}
+  			</if>
+  			<if test="supplierName!=null and supplierName!=''">
+  				and p.supplierName like #{supplierName}
+  			</if>
+  			<if test="startTime!=null and startTime!=''">
+  				and s.stockInDate >= #{startTime}
+  			</if>
+  			<if test="endTime!=null and endTime!=''">
+  				and s.stockInDate &lt;= #{endTime}
+  			</if>
+  	</select>
+  	<!-- 添加 -->
+  	<insert id="add" parameterType="stockIn">
+  		insert into t_stock_in (stockInName,stockInDate,stockInNum,goodsId,supplierId,userId,status) values(#{stockInName},#{stockInDate},#{stockInNum},#{goodsId},#{supplierId},#{userId},#{status})
+  	</insert>
+  	<!-- 删除 -->
+  	<update id="delete" parameterType="int">
+  		update t_stock_in set status=3 where id=#{0}
+  	</update>
+  	<!-- 修改 -->
+  	<update id="update" parameterType="stockIn">
+  		update t_stock_in set stockInName=#{stockInName},stockInNum=#{stockInNum},goodsId=#{goodsId},supplierId=#{supplierId} where id=#{id}
+  	</update>
+  	<!-- 根据id查询详情 -->
+  	<select id="findById" resultType="stockIn" parameterType="int">
+  		select s.*,g.goodsName `goods.goodsName`,p.supplierName `supplier.supplierName`,u.realName `user.realName` from t_stock_in s,t_goods g,t_supplier p,t_user u where s.goodsId=g.id and s.supplierId=p.id and s.userId=u.id and s.id=#{0}
+  	</select>
+  	<!-- 修改状态 -->
+  	<update id="updateStatus">
+  		update t_stock_in set status=#{status} where id=#{id}
+  	</update>
+  	<!-- 统计根据商品名称 -->
+  	<select id="tongjiByGoodsName" resultType="GoodsView" >
+		select g.goodsName goodsName,sum(s.stockInNum) totalNum from t_stock_in s left join t_goods g on s.goodsId=g.id where s.status=5 group by g.goodsName  
+  	</select>
+  	
+  	
+  	
+  	
+  	
+  </mapper>

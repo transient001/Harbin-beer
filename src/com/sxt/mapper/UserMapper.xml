@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.sxt.mapper.UserMapper">
+  	<!-- 登陆 -->
+  	<select id="login" resultType="User">
+  		select * from t_user where userName=#{userName} and password=#{password}
+  	</select>
+  	<!-- ajax检查用户名是否存在 -->
+  	<select id="ajaxCheckUserName" resultType="user" >
+  		select * from t_user where userName=#{userName}
+  	</select>
+  	<!-- 分页查询 -->
+  	<select id="findByPage" resultType="User" parameterType="map">
+  		<if test="userName!=null and userName!=''">
+  			<bind name="userName" value="'%'+userName+'%'"/>
+  		</if>
+  		<if test="realName!=null and realName!=''">
+  			<bind name="realName" value="'%'+realName+'%'"/>
+  		</if>
+  		<if test="roleName!=null and roleName!=''">
+  			<bind name="roleName" value="'%'+roleName+'%'"/>
+  		</if>  				
+  		select u.*,r.roleName `role.roleName` from t_user u left join t_role r on u.roleId=r.id
+  		<where>
+  			<if test="userName!=null and userName!=''">
+  				and u.userName like #{userName}
+  			</if>
+  			<if test="realName!=null and realName!=''">
+  				and u.realName like #{realName}
+  			</if>
+  			<if test="roleName!=null and roleName!=''">
+  				and r.roleName like #{roleName}
+  			</if>
+  		</where>
+  		limit #{startNum},#{pageSize}
+  	</select>
+  	<!-- 查询总的记录数 -->
+  	<select id="findCount" resultType="int" parameterType="user">
+  		<if test="userName!=null and userName!=''">
+  			<bind name="userName" value="'%'+userName+'%'"/>
+  		</if>
+  		<if test="realName!=null and realName!=''">
+  			<bind name="realName" value="'%'+realName+'%'"/>
+  		</if>
+  		<if test="roleName!=null and roleName!=''">
+  			<bind name="roleName" value="'%'+roleName+'%'"/>
+  		</if>  				
+  		select count(*) from t_user u left join t_role r on u.roleId=r.id
+  		<where>
+  			<if test="userName!=null and userName!=''">
+  				and u.userName like #{userName}
+  			</if>
+  			<if test="realName!=null and realName!=''">
+  				and u.realName like #{realName}
+  			</if>
+  			<if test="roleName!=null and roleName!=''">
+  				and r.roleName like #{roleName}
+  			</if>
+  		</where>  		
+  	</select>
+  	<!-- 添加 -->
+  	<insert id="add" parameterType="user">
+  		insert into t_user (userName,realName,password,sex,email,hiredate,roleId) values(#{userName},#{realName},#{password},#{sex},#{email},#{hiredate},#{roleId})
+  	</insert>
+  	<!-- 删除 -->
+  	<delete id="delete" parameterType="int">
+  		delete from t_user where id=#{id}
+  	</delete>
+  	<!-- 修改 -->
+  	<update id="update" parameterType="user">
+  		update t_user set userName=#{userName},realName=#{realName},password=#{password},sex=#{sex},email=#{email},roleId=#{roleId} where id=#{id}
+  	</update>
+  	<!-- 根据id查询详情 -->
+  	<select id="findById" resultType="user" parameterType="int">
+  		select u.*,r.roleName `role.roleName` from t_user u left join t_role r on u.roleId=r.id where u.id=#{id}
+  	</select>
+  	<!-- 修改密码 -->
+  	<update id="updatePassword">
+  		update t_user set password=#{password} where id=#{id}
+  	</update>
+  	
+  	
+  	
+  	
+  	
+  	
+  </mapper>

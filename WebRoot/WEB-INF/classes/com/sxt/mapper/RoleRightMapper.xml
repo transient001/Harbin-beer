@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.sxt.mapper.RoleRightMapper">
+  	<!-- 添加 -->
+  	<insert id="add" parameterType="roleRight">
+  		insert into t_role_right (roleId,rightId) values(#{roleId},#{rightId})
+  	</insert>
+  	<!-- 根据角色id查询全部 -->
+  	<select id="findByRoleId" resultType="roleRight" parameterType="int">
+  		select * from t_role_right where roleId=#{0}
+  	</select>
+  	<!-- 删除单个权限 -->
+  	<delete id="delete" parameterType="int">
+  		delete from t_role_right where roleId=#{0} and rightId=#{1}
+  	</delete>
+  	<!-- 删除全部权限 根据roleId -->
+  	<delete id="deleteAll" parameterType="int">
+  		delete from t_role_right where roleId=#{0}
+  	</delete>
+  </mapper>

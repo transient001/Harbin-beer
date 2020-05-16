@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.sxt.mapper.StockOutMapper">
+  	<!-- 分页查询 -->
+  	<select id="findByPage" resultType="stockOut" parameterType="map">
+  		<if test="stockOutName!=null and stockOutName!=''">
+  			<bind name="stockOutName" value="'%'+stockOutName+'%'"/>
+  		</if>
+  		<if test="goodsName!=null and goodsName!=''">
+  			<bind name="goodsName" value="'%'+goodsName+'%'"/>		
+  		</if>  	
+  		select s.*,g.goodsName `goods.goodsName`,u.realName `user.realName` from t_stock_out s,t_goods g,t_user u where s.goodsId=g.id and s.userId=u.id
+  		<if test="stockOutName!=null and stockOutName!=''">
+  			and s.stockOutName like #{stockOutName}
+  		</if>
+  		<if test="goodsName!=null and goodsName!=''">
+  			and g.goodsName like #{goodsName}	
+  		</if>
+  		<if test="status!=null and status!=''">
+  			and s.status=#{status}
+  		</if>  		
+  		<if test="startTime!=null and startTime!=''">
+  			and s.stockOutDate >= #{startTime}
+  		</if>
+  		<if test="endTime!=null and endTime!=''">
+  			and s.stockOutDate &lt;= #{endTime}
+  		</if>  		  			
+  		limit #{startNum},#{pageSize}
+  	</select>
+  	<!-- 查询总的记录数 -->
+  	<select id="findCount" resultType="int" parameterType="stockOut">
+  	  	<if test="stockOutName!=null and stockOutName!=''">
+  			<bind name="stockOutName" value="'%'+stockOutName+'%'"/>
+  		</if>
+  		<if test="goodsName!=null and goodsName!=''">
+  			<bind name="goodsName" value="'%'+goodsName+'%'"/>		
+  		</if>  	
+  		select count(*) from t_stock_out s,t_goods g,t_user u where s.goodsId=g.id and s.userId=u.id
+  		<if test="stockOutName!=null and stockOutName!=''">
+  			and s.stockOutName like #{stockOutName}
+  		</if>
+  		<if test="goodsName!=null and goodsName!=''">
+  			and g.goodsName like #{goodsName}	
+  		</if>
+  		<if test="status!=null and status!=''">
+  			and s.status=#{status}
+  		</if>  		
+  		<if test="startTime!=null and startTime!=''">
+  			and s.stockOutDate >= #{startTime}
+  		</if>
+  		<if test="endTime!=null and endTime!=''">
+  			and s.stockOutDate &lt;= #{endTime}
+  		</if>  		  			
+  	</select>
+  	<!-- 添加入库单 -->
+  	<insert id="add" parameterType="stockOut">
+  		insert into t_stock_out (stockOutName,stockOutDate,stockOutNum,goodsId,userId,status) values(#{stockOutName},#{stockOutDate},#{stockOutNum},#{goodsId},#{userId},#{status})
+  	</insert>
+  	<!-- 修改入库单 -->
+  	<update id="update" parameterType="stockOut">
+  		update t_stock_out set stockOutName=#{stockOutName},stockOutNum=#{stockOutNum},goodsId=#{goodsId},userId=#{userId} where id=#{id}
+  	</update>
+  	<!-- 删除 -->
+  	<update id="delete" parameterType="int">
+  		update t_stock_out set status=3 where id=#{id}
+  	</update>
+  	<!-- 根据id查询详情 -->
+  	<select id="findById" resultType="StockOut" parameterType="int">
+  		select s.*,g.goodsName `goods.goodsName`,u.realName `user.realName` from t_stock_out s,t_goods g,t_user u where s.goodsId=g.id and s.userId=u.id and s.id=#{id}
+  	</select>
+  	<!-- 修改状态 -->
+  	<update id="updateStatus">
+  		update t_stock_out set status=#{status} where id=#{id}
+  	</update>
+  	<!-- 统计根据商品名称 -->
+  	<select id="tongjiByGoodsName" resultType="GoodsView" >
+		select g.goodsName goodsName,sum(s.stockOutNum) totalNum from t_stock_out s left join t_goods g on s.goodsId=g.id where s.status=5 group by g.goodsName  
+  	</select>  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+
+  	
+  </mapper>

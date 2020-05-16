@@ -1,0 +1,23 @@
+.mydiv {
+	display: none;
+	background-color: #F7F7F7;
+	font-size: 12px;
+	font-weight: bold;
+	z-index: 99;
+	width: 470px;
+	border:5px solid #bbd1e8;
+	left: 40%; /*FF IE7*/
+	top: 20%; /*FF IE7*/
+	margin-left: -150px !important; 
+	margin-top: -60px !important; 
+	margin-top: 0px;
+	position: fixed !important; /*FF IE7*/
+	position: absolute; /*IE6*/
+}
+
+h4 {
+    background-color: #BBD1E8;
+    margin: 0px;
+    height: 24px;
+    font-size: 12px;
+}

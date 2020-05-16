@@ -1,0 +1,123 @@
+html,body {
+	height: 100%;
+	margin: 0px;
+	font-size: 12px;
+}
+
+.mydiv {
+	/*text-align: center;*/
+	background-color: #F7F7F7;
+	font-size: 12px;
+	font-weight: bold;
+	z-index: 99;
+	width: 570px;
+	height: 278px;
+	left: 40%; /*FF IE7*/
+	top: 20%; /*FF IE7*/
+	margin-left: -150px !important; /*FF IE7 璇ュ�涓烘湰韬鐨勪竴鍗�*/
+	margin-top: -60px !important; /*FF IE7 璇ュ�涓烘湰韬珮鐨勪竴鍗�/
+	margin-top: 0px;
+	position: fixed !important; /*FF IE7*/
+	position: absolute; /*IE6*/
+	_top: expression(eval(document . compatMode &&  
+		 document . compatMode ==   'CSS1Compat') ? documentElement .
+		scrollTop +(   document . 
+		 documentElement . clientHeight-this . offsetHeight )/ 2 : /*IE6*/  
+	   document . body . scrollTop +( document . body . clientHeight-this .
+		clientHeight )/ 2 ); /*IE5 IE5.5*/
+	
+}
+
+
+
+.mydivmap {
+	/*text-align: center;*/
+	font-size: 12px;
+	font-weight: bold;
+	z-index: 99;
+	width: 770px;
+	height: 378px;
+	left: 40%; /*FF IE7*/
+	top: 20%; /*FF IE7*/
+	margin-left: -150px !important; /*FF IE7 璇ュ�涓烘湰韬鐨勪竴鍗�*/
+	margin-top: -60px !important; /*FF IE7 璇ュ�涓烘湰韬珮鐨勪竴鍗�/
+	margin-top: 0px;
+	position: fixed !important; /*FF IE7*/
+	position: absolute; /*IE6*/
+	_top: expression(eval(document . compatMode &&  
+		 document . compatMode ==   'CSS1Compat') ? documentElement .
+		scrollTop +(   document . 
+		 documentElement . clientHeight-this . offsetHeight )/ 2 : /*IE6*/  
+	   document . body . scrollTop +( document . body . clientHeight-this .
+		clientHeight )/ 2 ); /*IE5 IE5.5*/
+}
+
+.mydivceng {
+	/*text-align: center;*/
+	font-size: 12px;
+	font-weight: bold;
+	z-index: 99;
+	width: 770px;
+	height: 378px;
+	left: 10%; /*FF IE7*/
+	top: 10%; /*FF IE7*/
+	margin-left: -150px !important; /*FF IE7 璇ュ�涓烘湰韬鐨勪竴鍗�*/
+	margin-top: -60px !important; /*FF IE7 璇ュ�涓烘湰韬珮鐨勪竴鍗�/
+	margin-top: 0px;
+	position: fixed !important; /*FF IE7*/
+	position: absolute; /*IE6*/
+	_top: expression(eval(document . compatMode &&  
+		 document . compatMode ==   'CSS1Compat') ? documentElement .
+		scrollTop +(   document . 
+		 documentElement . clientHeight-this . offsetHeight )/ 2 : /*IE6*/  
+	   document . body . scrollTop +( document . body . clientHeight-this .
+		clientHeight )/ 2 ); /*IE5 IE5.5*/
+}
+
+.bg {
+	background-color: #ccc;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	/*FF IE7*/
+	filter: alpha(opacity =   50); /*IE*/
+	opacity: 0.5; /*FF*/
+	z-index: 1;
+	position: fixed !important; /*FF IE7*/
+	position: absolute; /*IE6*/
+	_top: expression(eval(document . compatMode && document . compatMode ==
+		'CSS1Compat') ? documentElement . scrollTop +( document . 
+		   documentElement .   clientHeight-this .   offsetHeight )/ 2 :  
+		/*IE6*/  
+		   document .   body .   scrollTop +     (   document .   body . 
+		   clientHeight -     this .   clientHeight )/ 2 ); /*IE5 IE5.5*/
+}
+
+
+legend {
+	margin: 0px;
+	padding: 0px;
+}
+
+.mydiv {
+	display: none;
+}
+
+#editdiv {
+	background-color: #F7F7F7;
+	
+}
+
+.popDivchildren {
+	width: 500px;
+	height: 207px;
+	padding: 15px;
+	magin: 0px auto;
+	background-color: #ffffff;
+}
+h4{
+	background-color:#BBD1E8;
+	margin: 0px;
+	height: 24px;
+}

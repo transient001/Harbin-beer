@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.sxt.mapper.RightMapper">
+  	<!-- 根据角色id查询以及菜单 -->
+  	<select id="findByRoleId" resultType="right" parameterType="int">
+		select r.* from t_right r join t_role_right rr on r.id=rr.rightId where rr.roleId=#{0}
+  	</select>
+  	<!-- 根据父id查询子菜单 -->
+  	<select id="findByParentId" resultType="right" parameterType="int">
+  		select * from t_right where parentId=#{0}
+  	</select>
+  	<!-- 查询所有的一级菜单 -->
+  	<select id="findByLevel" resultType="right">
+  		select * from t_right where level=1
+  	</select>
+
+   	<!-- 分页查询 -->
+ 	<select id="findByPage" resultType="right" parameterType="map">
+  	  	<if test="rightName!=null and rightName!=''">
+  			<bind name="rightName" value="'%'+rightName+'%'"/>
+  		</if>
+  		select * from t_right where level=1
+  			<if test="rightName!=null and rightName!=''">
+  				and rightName like #{rightName}
+  			</if>
+  		limit #{startNum},#{pageSize}
+  	</select>
+  	<!-- 查询总的记录数 -->
+  	<select id="findCount" resultType="int" parameterType="right">
+  	  	<if test="rightName!=null and rightName!=''">
+  			<bind name="rightName" value="'%'+rightName+'%'"/>
+  		</if>
+  		select count(*) from t_right where level=1
+  		<if test="rightName!=null and rightName!=''">
+  			and rightName like #{rightName}
+  		</if>		
+  	</select> 
+  	<!-- 根据id查询父菜单拥有的子菜单 -->
+  	<select id="findLevelTwoById" resultType="right" parameterType="int">
+  		select * from t_right where level=2 and parentId=#{0}
+  	</select>
+  	<!-- 根据id查询详情 -->
+  	<select id="findById" resultType="right" parameterType="int">
+  		select * from t_right where id=#{0}
+  	</select>
+  	<!-- 添加一级权限 -->
+  	<insert id="addLevel1" parameterType="right">
+  		insert into t_right (rightName,level) values(#{rightName},#{level});
+  	</insert>
+  	<!-- 添加二级权限 -->
+  	<insert id="addLevel2" parameterType="right">
+  		insert into t_right (rightName,parentId,level) values(#{rightName},#{parentId},#{level});
+  	</insert>
+  	<!-- 根据父权限id删除相关所有的子权限 -->
+  	<delete id="deleteByParentId" parameterType="int">
+  		delete from t_right where parentId=#{0}
+  	</delete>
+  	<!-- 删除一级权限 -->
+  	<delete id="delete" parameterType="int">
+  		delete from t_right where id=#{0}
+  	</delete>  	
+  	<!-- 修改一级权限的名称 -->
+  	<update id="updateLevel1">
+  		update t_right set rightName=#{rightName} where id=#{id}
+  	</update>
+  	
+  	
+  </mapper>
